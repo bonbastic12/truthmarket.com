@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/* `dark:` utilities follow the .dark class on <html> (set by ThemeProvider), not the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Figtree", "Noto Sans Ethiopic", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* ------------------------------------------------------------------
+   Dark theme layer. Light is the Tailwind default used by every
+   component; dark remaps those same utilities, so one class on <html>
+   re-themes the whole app (header, marketplace, cards, forms, modals,
+   admin). Unlayered CSS beats Tailwind's layers, so no !important.
+   Palette: page #0b1120, surface #111a2e, raised #1a243b, line #2d3a55.
+   ------------------------------------------------------------------ */
+.dark { color-scheme: dark; }
+
+/* surfaces */
+.dark .bg-white { background-color: #111a2e; }
+.dark body.bg-white { background-color: #0b1120; }
+.dark .bg-white\/95 { background-color: rgb(11 17 32 / 0.95); }
+.dark .bg-slate-50, .dark .hover\:bg-slate-50:hover { background-color: #162036; }
+.dark .bg-slate-100, .dark .hover\:bg-slate-100:hover { background-color: #1a243b; }
+.dark .bg-slate-200 { background-color: #2d3a55; }
+.dark .bg-slate-300 { background-color: #3b4a68; }
+.dark .bg-blue-50 { background-color: #14224a; }
+.dark .bg-blue-100 { background-color: #1b2d63; }
+.dark .bg-red-50, .dark .hover\:bg-red-50:hover { background-color: #34171a; }
+.dark .bg-red-100 { background-color: #4a1c1f; }
+.dark .bg-emerald-50 { background-color: #0c2b21; }
+.dark .bg-emerald-100 { background-color: #0f3d2c; }
+.dark .bg-amber-100 { background-color: #3d2e0a; }
+
+/* the black "ink" buttons and badges become light chips in dark mode */
+.dark .bg-slate-900, .dark .hover\:bg-slate-900:hover { background-color: #e2e8f0; color: #0f172a; }
+.dark .bg-slate-900.text-white, .dark .hover\:bg-slate-900:hover.hover\:text-white, .dark .hover\:text-white:hover { color: #0f172a; }
+.dark .hover\:bg-slate-700:hover { background-color: #f8fafc; }
+
+/* text */
+.dark .text-slate-900 { color: #f1f5f9; }
+.dark .text-slate-700 { color: #cbd5e1; }
+.dark .text-slate-600 { color: #b4c0d3; }
+.dark .text-slate-500 { color: #94a3b8; }
+.dark .text-blue-700, .dark .text-blue-800 { color: #8db0ff; }
+.dark .text-red-600, .dark .text-red-700, .dark .text-red-800 { color: #fca5a5; }
+.dark .text-emerald-700, .dark .text-emerald-800 { color: #6ee7b7; }
+.dark .text-amber-800, .dark .text-amber-900 { color: #fcd34d; }
+
+/* borders, dividers, rings */
+.dark .border-slate-900, .dark .hover\:border-slate-900:hover { border-color: #3b4a68; }
+.dark .border-slate-300 { border-color: #3b4a68; }
+.dark .border-slate-200, .dark .divide-slate-200 > :not(:last-child) { border-color: #2d3a55; }
+.dark .border-slate-100 { border-color: #1f2a42; }
+.dark .border-red-200 { border-color: #7f1d1d; }
+.dark .border-emerald-300 { border-color: #065f46; }
+.dark .ring-slate-200 { --tw-ring-color: #2d3a55; }
+.dark .hover\:border-blue-600:hover, .dark .border-blue-600 { border-color: #4f7dff; }
+.dark .hover\:border-blue-400:hover { border-color: #3b64d8; }
+
+/* form fields */
+.dark input, .dark select, .dark textarea { color-scheme: dark; }
+.dark input::placeholder, .dark textarea::placeholder { color: #64748b; }
+.dark .accent-blue-600 { accent-color: #4f7dff; }
+
+/* Cross-fade for the whole page, only while the user flips the switch (ThemeProvider adds .theme-switching for
+   ~300ms). It is not on during normal use, so hover and layout animations stay as they are, and first load never flashes. */
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: background-color .25s ease, border-color .25s ease, color .25s ease, fill .25s ease, stroke .25s ease, box-shadow .25s ease, outline-color .25s ease !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.theme-switching *, html.theme-switching *::before, html.theme-switching *::after { transition: none !important; }
+}
+
+/* the amber notice and badge colours in dark mode (price badge "Fair", KYC gate) */
+.dark .border-amber-500 { border-color: #b45309; }
+
+/* a long Amharic word must never push a card or button wider than the screen */
+html[lang='am'] body { overflow-wrap: anywhere; word-break: normal; }

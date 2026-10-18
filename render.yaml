@@ -1,0 +1,47 @@
+# Render Blueprint for Truth Market (Node API + static React site). Database: MongoDB Atlas (not hosted by Render).
+# Secrets are marked sync: false: Render asks you for them in the dashboard; they are never stored in this file.
+services:
+  - type: web
+    name: truth-market-api
+    runtime: node
+    rootDir: server
+    plan: starter            # a persistent disk (needed for encrypted ID photos) is not available on the free plan
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    disk:
+      name: kyc-storage
+      mountPath: /var/data
+      sizeGB: 5
+    envVars:
+      - { key: NODE_ENV, value: production }
+      - { key: TRUST_PROXY, value: "1" }
+      - { key: KYC_STORAGE_DIR, value: /var/data/kyc }
+      - { key: COMMISSION_RATE, value: "0.10" }
+      - { key: BUYER_FEE_RATE, value: "0.05" }
+      - { key: ENABLE_LIVE_PAYMENTS, value: "false" }
+      - { key: SMS_PROVIDER, value: afromessage }
+      - { key: MONGODB_URI, sync: false }
+      - { key: JWT_SECRET, generateValue: true }
+      - { key: CLIENT_ORIGIN, sync: false }        # https://your-site.example
+      - { key: CLIENT_URL, sync: false }           # same address
+      - { key: PUBLIC_API_URL, sync: false }       # https://truth-market-api.onrender.com
+      - { key: CHAPA_SECRET_KEY, sync: false }     # CHASECK_TEST-... first
+      - { key: CHAPA_WEBHOOK_SECRET, sync: false }
+      - { key: KYC_ENCRYPTION_KEY, sync: false }
+      - { key: KYC_HASH_KEY, sync: false }
+      - { key: AFROMESSAGE_TOKEN, sync: false }
+      - { key: AFROMESSAGE_IDENTIFIER_ID, sync: false }
+      - { key: AFROMESSAGE_SENDER_NAME, sync: false }
+      - { key: ANTHROPIC_API_KEY, sync: false }
+
+  - type: web
+    name: truth-market-web
+    runtime: static
+    rootDir: client
+    buildCommand: npm install --include=dev && npm run build
+    staticPublishPath: dist
+    envVars:
+      - { key: VITE_API_URL, sync: false }         # https://truth-market-api.onrender.com/api
+    routes:
+      - { type: rewrite, source: /*, destination: /index.html }   # React Router deep links

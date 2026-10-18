@@ -1,0 +1,14 @@
+{
+  "name": "Truth Market",
+  "short_name": "Truth Market",
+  "description": "Buy and sell verified social media accounts, channels and websites in Ethiopia, protected by escrow.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1120",
+  "theme_color": "#1D5BFF",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
